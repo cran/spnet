@@ -70,23 +70,28 @@ setClass(
   prototype = prototype(
     meta = list(
       date.created = Sys.time(),
-      plot.color.default = "grey90",
+      plot.color.default = list(
+        background = "transparent",
+        region = "#ffffff",
+        node = "#f0f0f0",
+        border = "#000000"
+      ),
       plot.symbol.default = list(
         color = 'grey10',
         cex = 4,
         space = 0.5,
-        translate.x = 0,
-        translate.y = 0
+        shift.x = 0,
+        shift.y = 0
       ),
       plot.arrow.default = list(
         max.networks = 5,
         color = c('dodgerblue2', 'brown3', 'darkorange3', 'olivedrab', 'hotpink3'),
-        translate.x = c(0,0.2,-0.2,0,0),
-        translate.y = c(0,0,0,-0.2,0.2),
+        shift.x = c(0,0.2,-0.2,0,0),
+        shift.y = c(0,0,0,-0.2,0.2),
         opacity = 0.9,
         thickness = 2.00,
         length.rate = 1,
-        shortening = 0.3,
+        shorten = 0.3,
         head.length = 0.20,
         head.type = 'curved'
       )
@@ -109,7 +114,7 @@ setClass(
           stop(paste(
             "Some elements of the 'POSITION' column are not referenced on the map:",
             paste(object[which(!exist.in.map),'POSITION'], collapse = ', ')
-            )
+          )
           )
         }
       }
@@ -118,54 +123,54 @@ setClass(
     # layout
     
     # colors
-#     color <- object@plot.color
-#     if(flag && (length(color) > 0)){
-#       if(!all(names(color) %in% c('variable', 'legend'))) stop("Elements in 'plot.color' have to be named by one of the following names: 'variable', 'legend'.")
-#       if(!'variable' %in% names(color)) stop("The 'plot.color' list should contain a 'variable' element")
-#       if(!'legend' %in% names(color)) stop("The 'plot.color' list should contain a 'legend' element")
-#       if(!color$variable %in% names(object)) stop("The 'variable' element of 'plot.color' doesn't exist in data.")
-#       exist.in.data <- names(color$legend) %in% unique(object[,color$variable])
-#       if(!all(exist.in.data)) {
-#         stop(paste(
-#           "Some values in the 'legend' referenced in 'plot.color' doesn't exist in the variable ",
-#           color$variable,
-#           ': ',
-#           paste(names(color$legend)[which(!exist.in.data)], collapse = ', '),
-#           sep = ''
-#           )
-#         )
-#       }
-#     }
+    #     color <- object@plot.color
+    #     if(flag && (length(color) > 0)){
+    #       if(!all(names(color) %in% c('variable', 'legend'))) stop("Elements in 'plot.color' have to be named by one of the following names: 'variable', 'legend'.")
+    #       if(!'variable' %in% names(color)) stop("The 'plot.color' list should contain a 'variable' element")
+    #       if(!'legend' %in% names(color)) stop("The 'plot.color' list should contain a 'legend' element")
+    #       if(!color$variable %in% names(object)) stop("The 'variable' element of 'plot.color' doesn't exist in data.")
+    #       exist.in.data <- names(color$legend) %in% unique(object[,color$variable])
+    #       if(!all(exist.in.data)) {
+    #         stop(paste(
+    #           "Some values in the 'legend' referenced in 'plot.color' doesn't exist in the variable ",
+    #           color$variable,
+    #           ': ',
+    #           paste(names(color$legend)[which(!exist.in.data)], collapse = ', '),
+    #           sep = ''
+    #           )
+    #         )
+    #       }
+    #     }
     
     # symbol
-#     symbol <- object@plot.symbol
-#     if(flag && (length(symbol) > 0)){
-#       if(!all(names(symbol) %in% c('variable', 'legend', 'color', 'cex', 'space', 'translate.x', 'translate.y'))) stop("Elements in 'plot.symbol' have to be named by one of the following names: 'variable', 'legend', 'color', 'cex', 'space', 'translate.x', 'translate.y'.")
-#       if(!'variable' %in% names(symbol)) stop("The 'plot.symbol' list should contain a 'variable' element")
-#       if(!'legend' %in% names(symbol)) stop("The 'plot.symbol' list should contain a 'legend' element")
-#       if(!symbol$variable %in% names(object)) stop("The 'variable' element of 'plot.symbol' doesn't exist in data.")
-#       values.of.symbol.column <- unique(.extract.multiple.strings(object[,symbol$variable]))
-#       exist.in.data <- names(symbol$legend) %in% values.of.symbol.column
-#       if(!all(exist.in.data)) {
-#         stop(paste(
-#           "Some values in the 'legend' referenced in 'plot.symbol' doesn't exist in the variable ",
-#           symbol$variable,
-#           ': ',
-#           paste(names(symbol$legend)[which(!exist.in.data)], collapse = ', '),
-#           sep = ''
-#           )
-#         )
-#       }
-#       exist.in.symbol <- symbol$legend %in% names(spnet::.spnet.symbol.list)
-#       if(!all(exist.in.symbol)) stop(
-#         paste(
-#           "Some symbol names you provided doesn't exist:",
-#           paste(symbol$legend[which(!exist.in.symbol)])
-#         ))
-#     }
-
+    #     symbol <- object@plot.symbol
+    #     if(flag && (length(symbol) > 0)){
+    #       if(!all(names(symbol) %in% c('variable', 'legend', 'color', 'cex', 'space', 'shift.x', 'shift.y'))) stop("Elements in 'plot.symbol' have to be named by one of the following names: 'variable', 'legend', 'color', 'cex', 'space', 'shift.x', 'shift.y'.")
+    #       if(!'variable' %in% names(symbol)) stop("The 'plot.symbol' list should contain a 'variable' element")
+    #       if(!'legend' %in% names(symbol)) stop("The 'plot.symbol' list should contain a 'legend' element")
+    #       if(!symbol$variable %in% names(object)) stop("The 'variable' element of 'plot.symbol' doesn't exist in data.")
+    #       values.of.symbol.column <- unique(.extract.multiple.strings(object[,symbol$variable]))
+    #       exist.in.data <- names(symbol$legend) %in% values.of.symbol.column
+    #       if(!all(exist.in.data)) {
+    #         stop(paste(
+    #           "Some values in the 'legend' referenced in 'plot.symbol' doesn't exist in the variable ",
+    #           symbol$variable,
+    #           ': ',
+    #           paste(names(symbol$legend)[which(!exist.in.data)], collapse = ', '),
+    #           sep = ''
+    #           )
+    #         )
+    #       }
+    #       exist.in.symbol <- symbol$legend %in% names(spnet::.spnet.symbol.list)
+    #       if(!all(exist.in.symbol)) stop(
+    #         paste(
+    #           "Some symbol names you provided doesn't exist:",
+    #           paste(symbol$legend[which(!exist.in.symbol)])
+    #         ))
+    #     }
+    
     # barplots
-    # vérif variable numérique, 
+    # v??rif variable num??rique, 
     
     # networks
     nets <- object@networks
@@ -176,9 +181,9 @@ setClass(
       }
       
       for (net in nets) {
-#         if(!'data' %in% names(net)) {
-#           stop("One of the network doesn't contain a 'data' element")
-#         }
+        #         if(!'data' %in% names(net)) {
+        #           stop("One of the network doesn't contain a 'data' element")
+        #         }
         net.data <- net$data
         if(is.matrix(net.data)) {
           if(flag && (nrow(net.data)>0 || ncol(net.data)>0)) {
@@ -252,6 +257,7 @@ NULL
 #' This generic method intends to extract the map object. Currently only \code{SpatialPolygons} from the \code{sp} package are supported.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to get the map.
+#' @param value the map.
 #' @export
 setGeneric("spnet.map", function(object){ standardGeneric("spnet.map") })
 
@@ -266,7 +272,7 @@ setMethod(
 
 #' Set the map to a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the map object. Currently only \code{SpatialPolygons} from the \code{sp} package are supported.
+#' This generic method intends to set or replace the map object. Currently only \code{SpatialPolygons} from the \code{sp} package are supported.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to set the map.
 #' @param value the map.
@@ -279,6 +285,14 @@ setMethod(
   signature = c("SpatialNetwork", 'SpatialPolygons'),
   definition = function(object, value){
     object@map <- value
+    if (is.null(spnet.color.background(object)))
+      spnet.color.background(object) <- object@meta$plot.color$background
+    if (is.null(spnet.color.region(object)))
+      spnet.color.region(object) <- object@meta$plot.color$region
+    if (is.null(spnet.color.node(object)))
+      spnet.color.node(object) <- object@meta$plot.color$node
+    if (is.null(spnet.color.border(object)))
+      spnet.color.border(object) <- object@meta$plot.color$border
     validObject(object)
     return(object)
   }
@@ -299,6 +313,7 @@ setMethod(
 #' This generic method intends to extract networks parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to get parameters.
+#' @param value a list of parameters.
 #' @export
 setGeneric("spnet.networks.list", function(object){ standardGeneric("spnet.networks.list") })
 
@@ -313,7 +328,7 @@ setMethod(
 
 #' Set the list of all networks parameters of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace networks parameters of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace networks parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to set parameters.
 #' @param value a list of parameters.
@@ -340,6 +355,7 @@ setMethod(
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to get parameters.
 #' @param network.name character; the name of the network.
+#' @param value a list of parameters.
 #' @export
 setGeneric("spnet.network.list", function(object, network.name){ standardGeneric("spnet.network.list") })
 
@@ -354,7 +370,7 @@ setMethod(
 
 #' Set the list of all parameters of a given network of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace all parameters of a given network of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace all parameters of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to set parameters.
 #' @param network.name character; the name of the network.
@@ -466,6 +482,8 @@ setMethod(
 #' This generic method intends to extract the data of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param network.name character; the name of the network.
+#' @param value the network data. Currently only support a \code{matrix} object.
 #' @export
 setGeneric("spnet.network.data", function(object, network.name){ standardGeneric("spnet.network.data") })
 
@@ -484,7 +502,7 @@ setMethod(
 
 #' Set the data of a given network of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the data of a given network of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the data of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param network.name character; the name of the network.
@@ -523,6 +541,8 @@ setMethod(
 #' This generic method intends to extract the label of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param network.name character; the name of the network.
+#' @param value the network label.
 #' @export
 setGeneric("spnet.network.label", function(object, network.name){ standardGeneric("spnet.network.label") })
 
@@ -541,11 +561,11 @@ setMethod(
 
 #' Set the label of a given network of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the label of a given network of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the label of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param network.name character; the name of the network.
-#' @param value the network label. Currently only support a \code{matrix} object.
+#' @param value the network label.
 #' @export
 setGeneric("spnet.network.label<-", function(object, network.name, value){ standardGeneric("spnet.network.label<-") })
 
@@ -579,6 +599,8 @@ setMethod(
 #' This generic method intends to extract the arrow color of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param network.name character; the name of the network.
+#' @param value the arrow color.
 #' @export
 setGeneric("spnet.network.arrow.color", function(object, network.name){ standardGeneric("spnet.network.arrow.color") })
 
@@ -597,7 +619,7 @@ setMethod(
 
 #' Set the arrow color of a given network of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the arrow color of a given network of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the arrow color of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param network.name character; the name of the network.
@@ -635,6 +657,8 @@ setMethod(
 #' This generic method intends to extract the arrow opacity of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param network.name character; the name of the network.
+#' @param value the arrow opacity.
 #' @export
 setGeneric("spnet.network.arrow.opacity", function(object, network.name){ standardGeneric("spnet.network.arrow.opacity") })
 
@@ -653,7 +677,7 @@ setMethod(
 
 #' Set the arrow opacity of a given network of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the arrow opacity of a given network of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the arrow opacity of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param network.name character; the name of the network.
@@ -664,7 +688,7 @@ setGeneric("spnet.network.arrow.opacity<-", function(object, network.name, value
 #' @describeIn spnet.network.arrow.opacity method for \code{SpatialNetwork} objects.
 setMethod(
   f = "spnet.network.arrow.opacity<-" ,
-  signature = c("SpatialNetwork", "character", "character"),
+  signature = c("SpatialNetwork", "character", "numeric"),
   definition = function(object, network.name, value){
     if(!spnet.network.exists(object, network.name)) {
       stop("There is no arrow called '", network.name, "'.")
@@ -693,6 +717,8 @@ setMethod(
 #' This generic method intends to extract the arrow thickness of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param network.name character; the name of the network.
+#' @param value the arrow thickness.
 #' @export
 setGeneric("spnet.network.arrow.thickness", function(object, network.name){ standardGeneric("spnet.network.arrow.thickness") })
 
@@ -711,7 +737,7 @@ setMethod(
 
 #' Set the arrow thickness of a given network of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the arrow thickness of a given network of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the arrow thickness of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param network.name character; the name of the network.
@@ -722,7 +748,7 @@ setGeneric("spnet.network.arrow.thickness<-", function(object, network.name, val
 #' @describeIn spnet.network.arrow.thickness method for \code{SpatialNetwork} objects.
 setMethod(
   f = "spnet.network.arrow.thickness<-" ,
-  signature = c("SpatialNetwork", "character", "character"),
+  signature = c("SpatialNetwork", "character", "numeric"),
   definition = function(object, network.name, value){
     if(!spnet.network.exists(object, network.name)) {
       stop("There is no network called '", network.name, "'.")
@@ -750,41 +776,43 @@ setMethod(
 #' This generic method intends to extract the arrow shortening of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param network.name character; the name of the network.
+#' @param value the arrow shortening.
 #' @export
-setGeneric("spnet.network.arrow.shortening", function(object, network.name){ standardGeneric("spnet.network.arrow.shortening") })
+setGeneric("spnet.network.arrow.shorten", function(object, network.name){ standardGeneric("spnet.network.arrow.shorten") })
 
-#' @describeIn spnet.network.arrow.shortening method for \code{SpatialNetwork} objects.
+#' @describeIn spnet.network.arrow.shorten method for \code{SpatialNetwork} objects.
 setMethod(
-  f = "spnet.network.arrow.shortening",
+  f = "spnet.network.arrow.shorten",
   signature = c("SpatialNetwork", "character"), 
   definition = function (object, network.name) {
     if(!spnet.network.exists(object, network.name)) {
       stop("There is no network called '", network.name, "'.")
     }
-    return(object@networks[[network.name]]$shortening)
+    return(object@networks[[network.name]]$shorten)
   }
 )
 
 
 #' Set the arrow shortening of a given network of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the arrow shortening of a given network of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the arrow shortening of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param network.name character; the name of the network.
 #' @param value the arrow shortening.
 #' @export
-setGeneric("spnet.network.arrow.shortening<-", function(object, network.name, value){ standardGeneric("spnet.network.arrow.shortening<-") })
+setGeneric("spnet.network.arrow.shorten<-", function(object, network.name, value){ standardGeneric("spnet.network.arrow.shorten<-") })
 
-#' @describeIn spnet.network.arrow.shortening method for \code{SpatialNetwork} objects.
+#' @describeIn spnet.network.arrow.shorten method for \code{SpatialNetwork} objects.
 setMethod(
-  f = "spnet.network.arrow.shortening<-" ,
-  signature = c("SpatialNetwork", "character", "character"),
+  f = "spnet.network.arrow.shorten<-" ,
+  signature = c("SpatialNetwork", "character", "numeric"),
   definition = function(object, network.name, value){
     if(!spnet.network.exists(object, network.name)) {
-      stop("There is no network called '", network.name, "'. Please use the 'spnet.networks.add' function to define a network before trying to add shortening.")
+      stop("There is no network called '", network.name, "'. Please use the 'spnet.networks.add' function to define a network before trying to add shorten.")
     }
-    object@networks[[network.name]]$shortening <- value
+    object@networks[[network.name]]$shorten <- value
     validObject(object)
     return(object)
   }
@@ -811,6 +839,8 @@ setMethod(
 #' This generic method intends to extract the arrow head type of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param network.name character; the name of the network.
+#' @param value type of arrowhead to draw, one of "simple", "curved", "triangle", "circle", "ellipse" or "T". See \code{\link[shape]{Arrows}} for details.
 #' @export
 setGeneric("spnet.network.arrow.head.type", function(object, network.name){ standardGeneric("spnet.network.arrow.head.type") })
 
@@ -829,11 +859,11 @@ setMethod(
 
 #' Set the arrow head type of a given network of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the arrow head type of a given network of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the arrow head type of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param network.name character; the name of the network.
-#' @param value the arrow head type.
+#' @param value type of arrowhead to draw, one of "simple", "curved", "triangle", "circle", "ellipse" or "T". See \code{\link[shape]{Arrows}} for details.
 #' @export
 setGeneric("spnet.network.arrow.head.type<-", function(object, network.name, value){ standardGeneric("spnet.network.arrow.head.type<-") })
 
@@ -867,12 +897,14 @@ setMethod(
 #' This generic method intends to extract the arrow head length of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param network.name character; the name of the network.
+#' @param value the arrow head length.
 #' @export
-setGeneric("spnet.network.arrow.head.length", function(object, network.name){ standardGeneric("spnet.network.arrow.head.length") })
+setGeneric("spnet.network.arrow.head.lth", function(object, network.name){ standardGeneric("spnet.network.arrow.head.lth") })
 
-#' @describeIn spnet.network.arrow.head.length method for \code{SpatialNetwork} objects.
+#' @describeIn spnet.network.arrow.head.lth method for \code{SpatialNetwork} objects.
 setMethod(
-  f = "spnet.network.arrow.head.length",
+  f = "spnet.network.arrow.head.lth",
   signature = c("SpatialNetwork", "character"), 
   definition = function (object, network.name) {
     if(!spnet.network.exists(object, network.name)) {
@@ -885,18 +917,18 @@ setMethod(
 
 #' Set the arrow head length of a given network of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the arrow head length of a given network of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the arrow head length of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param network.name character; the name of the network.
 #' @param value the arrow head length.
 #' @export
-setGeneric("spnet.network.arrow.head.length<-", function(object, network.name, value){ standardGeneric("spnet.network.arrow.head.length<-") })
+setGeneric("spnet.network.arrow.head.lth<-", function(object, network.name, value){ standardGeneric("spnet.network.arrow.head.lth<-") })
 
-#' @describeIn spnet.network.arrow.head.length method for \code{SpatialNetwork} objects.
+#' @describeIn spnet.network.arrow.head.lth method for \code{SpatialNetwork} objects.
 setMethod(
-  f = "spnet.network.arrow.head.length<-" ,
-  signature = c("SpatialNetwork", "character", "character"),
+  f = "spnet.network.arrow.head.lth<-" ,
+  signature = c("SpatialNetwork", "character", "numeric"),
   definition = function(object, network.name, value){
     if(!spnet.network.exists(object, network.name)) {
       stop("There is no network called '", network.name, "'.")
@@ -918,46 +950,48 @@ setMethod(
 
 
 
-#' Get the arrow translation on the x axis of a given network of a \code{SpatialNetwork} object
+#' Get the arrow shift on the x axis of a given network of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to extract the arrow translation on the x axis of a given network of a \code{SpatialNetwork} object.
+#' This generic method intends to extract the arrow shift on the x axis of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param network.name character; the name of the network.
+#' @param value the arrow shift on the x axis.
 #' @export
-setGeneric("spnet.network.arrow.translate.x", function(object, network.name){ standardGeneric("spnet.network.arrow.translate.x") })
+setGeneric("spnet.network.arrow.shift.x", function(object, network.name){ standardGeneric("spnet.network.arrow.shift.x") })
 
-#' @describeIn spnet.network.arrow.translate.x method for \code{SpatialNetwork} objects.
+#' @describeIn spnet.network.arrow.shift.x method for \code{SpatialNetwork} objects.
 setMethod(
-  f = "spnet.network.arrow.translate.x",
+  f = "spnet.network.arrow.shift.x",
   signature = c("SpatialNetwork", "character"), 
   definition = function (object, network.name) {
     if(!spnet.network.exists(object, network.name)) {
       stop("There is no network called '", network.name, "'.")
     }
-    return(object@networks[[network.name]]$translate.x)
+    return(object@networks[[network.name]]$shift.x)
   }
 )
 
 
-#' Set the arrow translation on the x axis of a given network of a \code{SpatialNetwork} object
+#' Set the arrow shift on the x axis of a given network of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the arrow translation on the x axis of a given network of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the arrow shift on the x axis of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param network.name character; the name of the network.
-#' @param value the arrow translation on the x axis.
+#' @param value the arrow shift on the x axis.
 #' @export
-setGeneric("spnet.network.arrow.translate.x<-", function(object, network.name, value){ standardGeneric("spnet.network.arrow.translate.x<-") })
+setGeneric("spnet.network.arrow.shift.x<-", function(object, network.name, value){ standardGeneric("spnet.network.arrow.shift.x<-") })
 
-#' @describeIn spnet.network.arrow.translate.x method for \code{SpatialNetwork} objects.
+#' @describeIn spnet.network.arrow.shift.x method for \code{SpatialNetwork} objects.
 setMethod(
-  f = "spnet.network.arrow.translate.x<-" ,
-  signature = c("SpatialNetwork", "character", "character"),
+  f = "spnet.network.arrow.shift.x<-" ,
+  signature = c("SpatialNetwork", "character", "numeric"),
   definition = function(object, network.name, value){
     if(!spnet.network.exists(object, network.name)) {
       stop("There is no network called '", network.name, "'.")
     }
-    object@networks[[network.name]]$translate.x <- value
+    object@networks[[network.name]]$shift.x <- value
     validObject(object)
     return(object)
   }
@@ -972,46 +1006,48 @@ setMethod(
 
 
 
-#' Get the arrow translation on the y axis of a given network of a \code{SpatialNetwork} object
+#' Get the arrow shift on the y axis of a given network of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to extract the arrow translation on the y axis of a given network of a \code{SpatialNetwork} object.
+#' This generic method intends to extract the arrow shift on the y axis of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param network.name character; the name of the network.
+#' @param value the arrow shift on the y axis.
 #' @export
-setGeneric("spnet.network.arrow.translate.y", function(object, network.name){ standardGeneric("spnet.network.arrow.translate.y") })
+setGeneric("spnet.network.arrow.shift.y", function(object, network.name){ standardGeneric("spnet.network.arrow.shift.y") })
 
-#' @describeIn spnet.network.arrow.translate.y method for \code{SpatialNetwork} objects.
+#' @describeIn spnet.network.arrow.shift.y method for \code{SpatialNetwork} objects.
 setMethod(
-  f = "spnet.network.arrow.translate.y",
+  f = "spnet.network.arrow.shift.y",
   signature = c("SpatialNetwork", "character"), 
   definition = function (object, network.name) {
     if(!spnet.network.exists(object, network.name)) {
       stop("There is no network called '", network.name, "'.")
     }
-    return(object@networks[[network.name]]$translate.y)
+    return(object@networks[[network.name]]$shift.y)
   }
 )
 
 
-#' Set the arrow translation on the y axis of a given network of a \code{SpatialNetwork} object
+#' Set the arrow shift on the y axis of a given network of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the arrow translation on the y axis of a given network of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the arrow shift on the y axis of a given network of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param network.name character; the name of the network.
-#' @param value the arrow translation on the y axis.
+#' @param value the arrow shift on the y axis.
 #' @export
-setGeneric("spnet.network.arrow.translate.y<-", function(object, network.name, value){ standardGeneric("spnet.network.arrow.translate.y<-") })
+setGeneric("spnet.network.arrow.shift.y<-", function(object, network.name, value){ standardGeneric("spnet.network.arrow.shift.y<-") })
 
-#' @describeIn spnet.network.arrow.translate.y method for \code{SpatialNetwork} objects.
+#' @describeIn spnet.network.arrow.shift.y method for \code{SpatialNetwork} objects.
 setMethod(
-  f = "spnet.network.arrow.translate.y<-" ,
-  signature = c("SpatialNetwork", "character", "character"),
+  f = "spnet.network.arrow.shift.y<-" ,
+  signature = c("SpatialNetwork", "character", "numeric"),
   definition = function(object, network.name, value){
     if(!spnet.network.exists(object, network.name)) {
       stop("There is no network called '", network.name, "'.")
     }
-    object@networks[[network.name]]$translate.y <- value
+    object@networks[[network.name]]$shift.y <- value
     validObject(object)
     return(object)
   }
@@ -1051,7 +1087,7 @@ setMethod(
 
 #' Set the list of all title parameters of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace title parameters of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace title parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to set parameters.
 #' @param value a list of parameters.
@@ -1081,6 +1117,7 @@ setMethod(
 #' This generic method intends to extract the main title of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value the new title.
 #' @export
 setGeneric("spnet.title.main", function(object){ standardGeneric("spnet.title.main") })
 
@@ -1096,7 +1133,7 @@ setMethod(
 
 #' Set the main title  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the main title of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the main title of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value the new title.
@@ -1131,6 +1168,7 @@ setMethod(
 #' This generic method intends to extract the sub title of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value the new title.
 #' @export
 setGeneric("spnet.title.sub", function(object){ standardGeneric("spnet.title.sub") })
 
@@ -1146,7 +1184,7 @@ setMethod(
 
 #' Set the sub title  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the sub title of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the sub title of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value the new title.
@@ -1180,6 +1218,7 @@ setMethod(
 #' This generic method intends to extract label parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to get parameters.
+#' @param value a list of parameters.
 #' @export
 setGeneric("spnet.label.list", function(object){ standardGeneric("spnet.label.list") })
 
@@ -1194,7 +1233,7 @@ setMethod(
 
 #' Set the list of all label parameters of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace label parameters of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace label parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to set parameters.
 #' @param value a list of parameters.
@@ -1231,6 +1270,7 @@ setMethod(
 #' This generic method intends to extract the label variable of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value the new label, for example "#000000".
 #' @export
 setGeneric("spnet.label.variable", function(object){ standardGeneric("spnet.label.variable") })
 
@@ -1245,7 +1285,7 @@ setMethod(
 
 #' Set the label variable  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the label variable of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the label variable of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value the new label, for example "#000000".
@@ -1280,6 +1320,7 @@ setMethod(
 #' This generic method intends to extract the label cex of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value numeric; the cex parameter.
 #' @export
 setGeneric("spnet.label.cex", function(object){ standardGeneric("spnet.label.cex") })
 
@@ -1294,7 +1335,7 @@ setMethod(
 
 #' Set the label cex  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the label cex of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the label cex of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value numeric; the cex parameter.
@@ -1331,6 +1372,7 @@ setMethod(
 #' This generic method intends to extract the label color of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value the new label, for example "#000000".
 #' @export
 setGeneric("spnet.label.color", function(object){ standardGeneric("spnet.label.color") })
 
@@ -1345,7 +1387,7 @@ setMethod(
 
 #' Set the label color  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the label color of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the label color of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value the new label, for example "#000000".
@@ -1385,6 +1427,7 @@ setMethod(
 #' This generic method intends to extract color parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to get parameters.
+#' @param value a list of parameters.
 #' @export
 setGeneric("spnet.color.list", function(object){ standardGeneric("spnet.color.list") })
 
@@ -1399,7 +1442,7 @@ setMethod(
 
 #' Set the list of all color parameters of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace color parameters of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace color parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to set parameters.
 #' @param value a list of parameters.
@@ -1435,6 +1478,7 @@ setMethod(
 #' This generic method intends to extract the color variable of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value the new color, for example "#000000".
 #' @export
 setGeneric("spnet.color.variable", function(object){ standardGeneric("spnet.color.variable") })
 
@@ -1449,7 +1493,7 @@ setMethod(
 
 #' Set the color variable  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the color variable of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the color variable of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value the new color, for example "#000000".
@@ -1484,6 +1528,7 @@ setMethod(
 #' This generic method intends to extract the color legend of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value the color legend.
 #' @export
 setGeneric("spnet.color.legend", function(object){ standardGeneric("spnet.color.legend") })
 
@@ -1498,7 +1543,7 @@ setMethod(
 
 #' Set the color legend  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the color legend of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the color legend of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value the color legend.
@@ -1527,6 +1572,197 @@ setMethod(
 
 
 
+#' Get the background color of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to extract the background color of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a \code{character}, the color.
+#' @export
+setGeneric("spnet.color.background", function(object){ standardGeneric("spnet.color.background") })
+
+#' @describeIn spnet.color.background method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.color.background",
+  signature = "SpatialNetwork", 
+  definition = function (object) { 
+    return(slot(object, "plot.color")$background)
+  }
+)
+
+#' Set the background color  of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to set or replace the background color of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a \code{character}, the color.
+#' @export
+setGeneric("spnet.color.background<-", function(object, value){ standardGeneric("spnet.color.background<-") })
+
+#' @describeIn spnet.color.background method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.color.background<-" ,
+  signature = c("SpatialNetwork", 'character'),
+  definition = function(object, value){
+    object@plot.color$background <- value
+    validObject(object)
+    return(object)
+  }
+)
+
+
+
+
+
+
+
+
+
+
+
+#' Get the default color of a region of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to extract the default color of a region of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a \code{character}, the color.
+#' @export
+setGeneric("spnet.color.region", function(object){ standardGeneric("spnet.color.region") })
+
+#' @describeIn spnet.color.region method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.color.region",
+  signature = "SpatialNetwork", 
+  definition = function (object) { 
+    return(slot(object, "plot.color")$region)
+  }
+)
+
+#' Set the default color of a region  of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to set or replace the default color of a region of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a \code{character}, the color.
+#' @export
+setGeneric("spnet.color.region<-", function(object, value){ standardGeneric("spnet.color.region<-") })
+
+#' @describeIn spnet.color.region method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.color.region<-" ,
+  signature = c("SpatialNetwork", 'character'),
+  definition = function(object, value){
+    object@plot.color$region <- value
+    validObject(object)
+    return(object)
+  }
+)
+
+
+
+
+
+
+
+
+
+#' Get the default color of a node of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to extract the default color of a node of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a \code{character}, the color.
+#' @export
+setGeneric("spnet.color.node", function(object){ standardGeneric("spnet.color.node") })
+
+#' @describeIn spnet.color.node method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.color.node",
+  signature = "SpatialNetwork", 
+  definition = function (object) { 
+    return(slot(object, "plot.color")$node)
+  }
+)
+
+#' Set the default color of a node  of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to set or replace the default color of a node of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a \code{character}, the color.
+#' @export
+setGeneric("spnet.color.node<-", function(object, value){ standardGeneric("spnet.color.node<-") })
+
+#' @describeIn spnet.color.node method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.color.node<-" ,
+  signature = c("SpatialNetwork", 'character'),
+  definition = function(object, value){
+    object@plot.color$node <- value
+    validObject(object)
+    return(object)
+  }
+)
+
+
+
+
+
+
+
+
+
+
+#' Get the border color of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to extract the border color of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a \code{character}, the color.
+#' @export
+setGeneric("spnet.color.border", function(object){ standardGeneric("spnet.color.border") })
+
+#' @describeIn spnet.color.border method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.color.border",
+  signature = "SpatialNetwork", 
+  definition = function (object) { 
+    return(slot(object, "plot.color")$border)
+  }
+)
+
+#' Set the border color  of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to set or replace the border color of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a \code{character}, the color.
+#' @export
+setGeneric("spnet.color.border<-", function(object, value){ standardGeneric("spnet.color.border<-") })
+
+#' @describeIn spnet.color.border method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.color.border<-" ,
+  signature = c("SpatialNetwork", 'character'),
+  definition = function(object, value){
+    object@plot.color$border <- value
+    validObject(object)
+    return(object)
+  }
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #' Get the list of all symbol parameters of a \code{SpatialNetwork} object
@@ -1534,6 +1770,7 @@ setMethod(
 #' This generic method intends to extract symbol parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to get parameters.
+#' @param value a list of parameters.
 #' @export
 setGeneric("spnet.symbol.list", function(object){ standardGeneric("spnet.symbol.list") })
 
@@ -1548,7 +1785,7 @@ setMethod(
 
 #' Set the list of all symbol parameters of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace symbol parameters of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace symbol parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to set parameters.
 #' @param value a list of parameters.
@@ -1585,6 +1822,7 @@ setMethod(
 #' This generic method intends to extract the symbol variable of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value the symbol variable.
 #' @export
 setGeneric("spnet.symbol.variable", function(object){ standardGeneric("spnet.symbol.variable") })
 
@@ -1599,7 +1837,7 @@ setMethod(
 
 #' Set the symbol variable  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the symbol variable of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the symbol variable of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value the symbol variable.
@@ -1638,6 +1876,7 @@ setMethod(
 #' This generic method intends to extract the symbol legend of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value the new legend.
 #' @export
 setGeneric("spnet.symbol.legend", function(object){ standardGeneric("spnet.symbol.legend") })
 
@@ -1652,7 +1891,7 @@ setMethod(
 
 #' Set the symbol legend  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the symbol legend of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the symbol legend of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value the new legend.
@@ -1687,6 +1926,7 @@ setMethod(
 #' This generic method intends to extract the symbol cex parameter of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value the new cex parameter.
 #' @export
 setGeneric("spnet.symbol.cex", function(object){ standardGeneric("spnet.symbol.cex") })
 
@@ -1701,7 +1941,7 @@ setMethod(
 
 #' Set the symbol cex parameter  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the symbol cex parameter of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the symbol cex parameter of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value the new cex parameter.
@@ -1740,6 +1980,7 @@ setMethod(
 #' This generic method intends to extract the symbol color of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value the color.
 #' @export
 setGeneric("spnet.symbol.color", function(object){ standardGeneric("spnet.symbol.color") })
 
@@ -1754,7 +1995,7 @@ setMethod(
 
 #' Set the symbol color of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the symbol color of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the symbol color of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value the color.
@@ -1785,38 +2026,39 @@ setMethod(
 
 
 
-#' Get the symbol translation on the x axis of a \code{SpatialNetwork} object
+#' Get the symbol shift on the x axis of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to extract the value of symbol translation on the x axis of a \code{SpatialNetwork} object.
+#' This generic method intends to extract the value of symbol shift on the x axis of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value a numeric; the value of the shift.s
 #' @export
-setGeneric("spnet.symbol.translate.x", function(object){ standardGeneric("spnet.symbol.translate.x") })
+setGeneric("spnet.symbol.shift.x", function(object){ standardGeneric("spnet.symbol.shift.x") })
 
-#' @describeIn spnet.symbol.translate.x method for \code{SpatialNetwork} objects.
+#' @describeIn spnet.symbol.shift.x method for \code{SpatialNetwork} objects.
 setMethod(
-  f = "spnet.symbol.translate.x",
+  f = "spnet.symbol.shift.x",
   signature = "SpatialNetwork", 
   definition = function (object) { 
-    return(slot(object, "plot.symbol")$translate.x)
+    return(slot(object, "plot.symbol")$shift.x)
   }
 )
 
-#' Set the symbol translation on the x axis of a \code{SpatialNetwork} object
+#' Set the symbol shift on the x axis of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the value of symbol translation on the x axis of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the value of symbol shift on the x axis of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
-#' @param value a numeric; the value of the translation.
+#' @param value a numeric; the value of the shift.
 #' @export
-setGeneric("spnet.symbol.translate.x<-", function(object, value){ standardGeneric("spnet.symbol.translate.x<-") })
+setGeneric("spnet.symbol.shift.x<-", function(object, value){ standardGeneric("spnet.symbol.shift.x<-") })
 
-#' @describeIn spnet.symbol.translate.x method for \code{SpatialNetwork} objects.
+#' @describeIn spnet.symbol.shift.x method for \code{SpatialNetwork} objects.
 setMethod(
-  f = "spnet.symbol.translate.x<-" ,
+  f = "spnet.symbol.shift.x<-" ,
   signature = c("SpatialNetwork", 'numeric'),
   definition = function(object, value){
-    object@plot.symbol$translate.x <- value
+    object@plot.symbol$shift.x <- value
     validObject(object)
     return(object)
   }
@@ -1833,38 +2075,39 @@ setMethod(
 
 
 
-#' Get the symbol translation on the y axis of a \code{SpatialNetwork} object
+#' Get the symbol shift on the y axis of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to extract the value of the symbol translation on the y of a \code{SpatialNetwork} object.
+#' This generic method intends to extract the value of the symbol shift on the y of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value a numeric; the value of the shift.
 #' @export
-setGeneric("spnet.symbol.translate.y", function(object){ standardGeneric("spnet.symbol.translate.y") })
+setGeneric("spnet.symbol.shift.y", function(object){ standardGeneric("spnet.symbol.shift.y") })
 
-#' @describeIn spnet.symbol.translate.y method for \code{SpatialNetwork} objects.
+#' @describeIn spnet.symbol.shift.y method for \code{SpatialNetwork} objects.
 setMethod(
-  f = "spnet.symbol.translate.y",
+  f = "spnet.symbol.shift.y",
   signature = "SpatialNetwork", 
   definition = function (object) { 
-    return(slot(object, "plot.symbol")$translate.y)
+    return(slot(object, "plot.symbol")$shift.y)
   }
 )
 
-#' Set the symbol translation on the y axis of a \code{SpatialNetwork} object
+#' Set the symbol shift on the y axis of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the value of the symbol translation on the y axis of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the value of the symbol shift on the y axis of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
-#' @param value a numeric; the value of the translation.
+#' @param value a numeric; the value of the shift.
 #' @export
-setGeneric("spnet.symbol.translate.y<-", function(object, value){ standardGeneric("spnet.symbol.translate.y<-") })
+setGeneric("spnet.symbol.shift.y<-", function(object, value){ standardGeneric("spnet.symbol.shift.y<-") })
 
-#' @describeIn spnet.symbol.translate.y method for \code{SpatialNetwork} objects.
+#' @describeIn spnet.symbol.shift.y method for \code{SpatialNetwork} objects.
 setMethod(
-  f = "spnet.symbol.translate.y<-" ,
+  f = "spnet.symbol.shift.y<-" ,
   signature = c("SpatialNetwork", 'numeric'),
   definition = function(object, value){
-    object@plot.symbol$translate.y <- value
+    object@plot.symbol$shift.y <- value
     validObject(object)
     return(object)
   }
@@ -1886,6 +2129,7 @@ setMethod(
 #' This generic method intends to extract barplot parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to get parameters.
+#' @param value a list of parameters.
 #' @export
 setGeneric("spnet.barplot.list", function(object){ standardGeneric("spnet.barplot.list") })
 
@@ -1900,7 +2144,7 @@ setMethod(
 
 #' Set the list of all barplot parameters of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace barplot parameters of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace barplot parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to set parameters.
 #' @param value a list of parameters.
@@ -1939,6 +2183,7 @@ setMethod(
 #' This generic method intends to extract the barplot variable of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value the name of the variable to use for plotting barplots.
 #' @export
 setGeneric("spnet.barplot.variable", function(object){ standardGeneric("spnet.barplot.variable") })
 
@@ -1953,7 +2198,7 @@ setMethod(
 
 #' Set the barplot variable  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the barplot variable of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the barplot variable of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value the name of the variable to use for plotting barplots.
@@ -1991,6 +2236,7 @@ setMethod(
 #' This generic method intends to extract the barplot foreground color of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value the color.
 #' @export
 setGeneric("spnet.barplot.fgcolor", function(object){ standardGeneric("spnet.barplot.fgcolor") })
 
@@ -2006,7 +2252,7 @@ setMethod(
 
 #' Set the barplot foreground color  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the barplot foreground color of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the barplot foreground color of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value the color.
@@ -2046,6 +2292,7 @@ setMethod(
 #' This generic method intends to extract the barplot background color of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value the new color.
 #' @export
 setGeneric("spnet.barplot.bgcolor", function(object){ standardGeneric("spnet.barplot.bgcolor") })
 
@@ -2060,7 +2307,7 @@ setMethod(
 
 #' Set the barplot background color  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the barplot background color of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the barplot background color of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value the new color.
@@ -2101,6 +2348,7 @@ setMethod(
 #' This generic method intends to extract the barplot lower bound position of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value a numeric vector of coordinates, c(x,y), specifying a shift from the center of each country.
 #' @export
 setGeneric("spnet.barplot.bound.lower", function(object){ standardGeneric("spnet.barplot.bound.lower") })
 
@@ -2115,10 +2363,10 @@ setMethod(
 
 #' Set the barplot lower bound position  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the barplot lower bound position of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the barplot lower bound position of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
-#' @param value a numeric vector of coordinates, c(x,y), specifying a translation from the center of each country.
+#' @param value a numeric vector of coordinates, c(x,y), specifying a shift from the center of each country.
 #' @export
 setGeneric("spnet.barplot.bound.lower<-", function(object, value){ standardGeneric("spnet.barplot.bound.lower<-") })
 
@@ -2153,6 +2401,7 @@ setMethod(
 #' This generic method intends to extract the barplot upper bound position of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value a numeric vector of coordinates, c(x,y), specifying a shift from the center of each country.
 #' @export
 setGeneric("spnet.barplot.bound.upper", function(object){ standardGeneric("spnet.barplot.bound.upper") })
 
@@ -2167,10 +2416,10 @@ setMethod(
 
 #' Set the barplot upper bound position  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the barplot upper bound position of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the barplot upper bound position of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
-#' @param value a numeric vector of coordinates, c(x,y), specifying a translation from the center of each country.
+#' @param value a numeric vector of coordinates, c(x,y), specifying a shift from the center of each country.
 #' @export
 setGeneric("spnet.barplot.bound.upper<-", function(object, value){ standardGeneric("spnet.barplot.bound.upper<-") })
 
@@ -2204,6 +2453,7 @@ setMethod(
 #' This generic method intends to extract the barplot width of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
+#' @param value a numeric.
 #' @export
 setGeneric("spnet.barplot.width", function(object){ standardGeneric("spnet.barplot.width") })
 
@@ -2218,7 +2468,7 @@ setMethod(
 
 #' Set the barplot width  of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace the barplot width of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace the barplot width of a \code{SpatialNetwork} object.
 #' 
 #' @param object a \code{SpatialNetwork} object.
 #' @param value a numeric.
@@ -2256,6 +2506,7 @@ setMethod(
 #' This generic method intends to extract legend parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to get parameters.
+#' @param value a list of parameters.
 #' @export
 
 setGeneric("spnet.legend.list", function(object){ standardGeneric("spnet.legend.list") })
@@ -2271,7 +2522,7 @@ setMethod(
 
 #' Set the list of all legend parameters of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace legend parameters of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace legend parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to set parameters.
 #' @param value a list of parameters.
@@ -2302,11 +2553,229 @@ setMethod(
 
 
 
+#' Get the legend print (yes/no) status of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to extract the legend print (yes/no) status of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a logical.
+#' @export
+setGeneric("spnet.legend.print", function(object){ standardGeneric("spnet.legend.print") })
+
+#' @describeIn spnet.legend.print method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.legend.print",
+  signature = "SpatialNetwork", 
+  definition = function (object) { 
+    return(slot(object, "plot.legend")$print)
+  }
+)
+
+#' Set the legend print (yes/no) status of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to set or replace the legend print (yes/no) status of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a logical.
+#' @export
+setGeneric("spnet.legend.print<-", function(object, value){ standardGeneric("spnet.legend.print<-") })
+
+#' @describeIn spnet.legend.print method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.legend.print<-" ,
+  signature = c("SpatialNetwork", 'logical'),
+  definition = function(object, value){
+    object@plot.legend$print <- value
+    validObject(object)
+    return(object)
+  }
+)
+
+
+
+
+
+
+
+
+#' Get the legend cex parameter of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to extract the legend cex parameter of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a numeric.
+#' @export
+setGeneric("spnet.legend.cex", function(object){ standardGeneric("spnet.legend.cex") })
+
+#' @describeIn spnet.legend.cex method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.legend.cex",
+  signature = "SpatialNetwork", 
+  definition = function (object) { 
+    return(slot(object, "plot.legend")$cex)
+  }
+)
+
+#' Set the legend cex parameter of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to set or replace the legend cex parameter of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a numeric.
+#' @export
+setGeneric("spnet.legend.cex<-", function(object, value){ standardGeneric("spnet.legend.cex<-") })
+
+#' @describeIn spnet.legend.cex method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.legend.cex<-" ,
+  signature = c("SpatialNetwork", 'numeric'),
+  definition = function(object, value){
+    object@plot.legend$cex <- value
+    validObject(object)
+    return(object)
+  }
+)
+
+
+
+
+
+#' Get the legend number of columns of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to extract the legend number of columns of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a numeric.
+#' @export
+setGeneric("spnet.legend.ncol", function(object){ standardGeneric("spnet.legend.ncol") })
+
+#' @describeIn spnet.legend.ncol method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.legend.ncol",
+  signature = "SpatialNetwork", 
+  definition = function (object) { 
+    return(slot(object, "plot.legend")$ncol)
+  }
+)
+
+#' Set the legend number of columns of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to set or replace the legend number of columns of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a numeric.
+#' @export
+setGeneric("spnet.legend.ncol<-", function(object, value){ standardGeneric("spnet.legend.ncol<-") })
+
+#' @describeIn spnet.legend.ncol method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.legend.ncol<-" ,
+  signature = c("SpatialNetwork", 'numeric'),
+  definition = function(object, value){
+    object@plot.legend$ncol <- value
+    validObject(object)
+    return(object)
+  }
+)
+
+
+
+
+
+
+#' Get the legend horizontal or vertical setting of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to extract the legend horizontal or vertical setting of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a logical.
+#' @export
+setGeneric("spnet.legend.horiz", function(object){ standardGeneric("spnet.legend.horiz") })
+
+#' @describeIn spnet.legend.horiz method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.legend.horiz",
+  signature = "SpatialNetwork", 
+  definition = function (object) { 
+    return(slot(object, "plot.legend")$horiz)
+  }
+)
+
+#' Set the legend horizontal or vertical setting of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to set or replace the legend horizontal or vertical setting of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a logical.
+#' @export
+setGeneric("spnet.legend.horiz<-", function(object, value){ standardGeneric("spnet.legend.horiz<-") })
+
+#' @describeIn spnet.legend.horiz method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.legend.horiz<-" ,
+  signature = c("SpatialNetwork", 'logical'),
+  definition = function(object, value){
+    object@plot.legend$horiz <- value
+    validObject(object)
+    return(object)
+  }
+)
+
+
+
+
+
+#' Get the legend line width parameter of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to extract the legend line width parameter of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a logical.
+#' @export
+setGeneric("spnet.legend.line.width", function(object){ standardGeneric("spnet.legend.line.width") })
+
+#' @describeIn spnet.legend.line.width method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.legend.line.width",
+  signature = "SpatialNetwork", 
+  definition = function (object) { 
+    return(slot(object, "plot.legend")$lwd)
+  }
+)
+
+#' Set the legend line width parameter of a \code{SpatialNetwork} object
+#' 
+#' This generic method intends to set or replace the legend line width parameter of a \code{SpatialNetwork} object.
+#' 
+#' @param object a \code{SpatialNetwork} object.
+#' @param value a logical.
+#' @export
+setGeneric("spnet.legend.line.width<-", function(object, value){ standardGeneric("spnet.legend.line.width<-") })
+
+#' @describeIn spnet.legend.line.width method for \code{SpatialNetwork} objects.
+setMethod(
+  f = "spnet.legend.line.width<-" ,
+  signature = c("SpatialNetwork", 'numeric'),
+  definition = function(object, value){
+    object@plot.legend$lwd <- value
+    validObject(object)
+    return(object)
+  }
+)
+
+
+
+
+
+
+
 #' Get the list of all layout parameters of a \code{SpatialNetwork} object
 #' 
 #' This generic method intends to extract layout parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to get parameters.
+#' @param value a list of parameters.
+#' @export
 setGeneric("spnet.layout.list", function(object){ standardGeneric("spnet.layout.list") })
 
 #' @describeIn spnet.layout.list method for \code{SpatialNetwork} objects.
@@ -2320,7 +2789,7 @@ setMethod(
 
 #' Set the list of all layout parameters of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace layout parameters of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace layout parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to set parameters.
 #' @param value a list of parameters.
@@ -2359,6 +2828,7 @@ setMethod(
 #' This generic method intends to extract par parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to get parameters.
+#' @param value a list of parameters.
 #' @export
 setGeneric("spnet.par.list", function(object){ standardGeneric("spnet.par.list") })
 
@@ -2373,7 +2843,7 @@ setMethod(
 
 #' Set the list of all par parameters of a \code{SpatialNetwork} object
 #' 
-#' This generic method intends to add or replace par parameters of a \code{SpatialNetwork} object.
+#' This generic method intends to set or replace par parameters of a \code{SpatialNetwork} object.
 #' 
 #' @param object the \code{SpatialNetwork} object for which we want to set parameters.
 #' @param value a list of parameters.
@@ -2405,20 +2875,20 @@ setMethod(
 #' 
 #' @author Emmanuel Rousseaux
 #' 
-#' @param x AAA
-#' @param map AAA
-#' @param networks AAA
-#' @param plot.title AAA
-#' @param plot.label list of arguments to be passed to the \code{\link{text}} function.
-#' @param plot.color AAA
-#' @param plot.symbol AAA
-#' @param plot.barplot AAA
-#' @param plot.arrow AAA
-#' @param plot.legend AAA
-#' @param plot.layout AAA
-#' @param plot.par AAA
-#' @param infos AAA
-#' @param quiet = FALSE AAA
+#' @param x a \code{data.frame} containing at least two columns: \code{NODE} and \code{POSITION}.
+#' @param map a \code{\link[sp]{SpatialPolygons}} object.
+#' @param networks a list of the networks to plot.
+#' @param plot.title a list of parameters for setting the title.
+#' @param plot.label a list of parameters to be passed to the \code{\link{text}} function for setting labels.
+#' @param plot.color a list of parameters for setting colors.
+#' @param plot.symbol a list of parameters for setting symbols.
+#' @param plot.barplot a list of parameters for setting barplots.
+#' @param plot.arrow a list of parameters for setting arrows.
+#' @param plot.legend a list of parameters for setting the legend.
+#' @param plot.layout a list of parameters for setting the layout.
+#' @param plot.par a list of graphical parameters.
+#' @param infos a list of meta information about the instance of the object.
+#' @param quiet = FALSE a logical, suppress all messages.
 #' @export
 #' @examples
 #' people <- c("John", "Elsa", "Brian", "Kate")
@@ -2448,7 +2918,7 @@ spnet.create <- function(
   plot.symbol,
   plot.barplot = list(variable = "", bound.lower = c(-0.5,-0.5), bound.upper = c(0.5,-0.5), fgcolor = "#666666", bgcolor = "#eeeeee", width = 8),
   plot.arrow,
-  plot.legend = list(print = TRUE, cex = 1, ncol = 1, horiz = FALSE),
+  plot.legend = list(print = TRUE, cex = 1, ncol = 1, horiz = FALSE, lwd = 1),
   plot.layout = list(ratios = c('title' = 1/10, 'graphic' = 7/10, 'legend' = 2/10), mat = NULL, reset = TRUE),
   plot.par = list(mar = c(1,1,1,1)), # par(mar = c(5,4,2,2))
   infos,
@@ -2498,9 +2968,9 @@ setMethod(
     
     if(length(object@networks) > 0) {
       cat("- Network data:\n")
-#       for (net in nets) {
-        cat("    ", "Number of network(s): ", length(object@networks), sep = "")
-#       }
+      #       for (net in nets) {
+      cat("    ", "Number of network(s): ", length(object@networks), sep = "")
+      #       }
       cat("\n\n")
     }
     
@@ -2539,10 +3009,10 @@ setMethod(
     tit <- x@plot.title
     
     color <- x@plot.color
-    flag.color <- ifelse(length(color) > 0, T, F)
-        
+    flag.color <- ifelse(!is.null(color$variable) && !is.null(color$legend), T, F)
+    
     symbol <- x@plot.symbol
-    flag.symbol <- ifelse(length(symbol) > 0, T, F)
+    flag.symbol <- ifelse(!is.null(symbol$variable) && !is.null(symbol$legend), T, F)
     
     barplot <- x@plot.barplot
     flag.barplot <- ifelse(nzchar(barplot$variable), T, F)
@@ -2556,20 +3026,20 @@ setMethod(
     
     ## PLOT
     def.par <- par(no.readonly = TRUE) # save default, for resetting...
-#     nf <- layout(
-#       mat = matrix(c(1,2),nrow=2,byrow = TRUE),
-#       widths = c(6.8),
-#       heights = c(4,1),
-#       respect = TRUE
-#     )
-
+    #     nf <- layout(
+    #       mat = matrix(c(1,2),nrow=2,byrow = TRUE),
+    #       widths = c(6.8),
+    #       heights = c(4,1),
+    #       respect = TRUE
+    #     )
+    
     if(!is.null(lay$mat)) {
-#       nf <- layout(
-#         mat = matrix(c(1,3,2,2),nrow=2,byrow = TRUE),
-#         widths = c(3,3),
-#         heights = c(4,1), 
-#         respect = TRUE
-#       )
+      #       nf <- layout(
+      #         mat = matrix(c(1,3,2,2),nrow=2,byrow = TRUE),
+      #         widths = c(3,3),
+      #         heights = c(4,1), 
+      #         respect = TRUE
+      #       )
     } else {
       nf <- layout(
         mat = matrix(c(1,2,3),nrow=3,byrow = TRUE),
@@ -2578,7 +3048,7 @@ setMethod(
         respect = TRUE
       )
     }
-#     layout.show(nf)
+    #     layout.show(nf)
     par(spnet.par.list(x))
     
     plot.new()
@@ -2614,7 +3084,7 @@ setMethod(
       tit.sub.clean
     ))
     eval(sub.call)
-
+    
     if(!'POSITION' %in% names(x)) { # we only plot the map
       plot(spnet.map(x), ... = ...)
       plot.new()
@@ -2623,28 +3093,28 @@ setMethod(
       coord <- coordinates(x@map)
       ids <- row.names(coord)
       seats <- x[, 'POSITION']
-      names(seats) <- rep(x@meta$plot.color.default, length(seats))
-#       print(seats)
+      seats.which <- match(seats, ids)
+      
+      col <- rep(spnet.color.region(x), nrow(coord))
+      col[seats.which] <- spnet.color.node(x)
       
       if(flag.color) {
-        names(seats) <- x[, color$variable] # we store color labels in the names
-        names(seats)[!names(seats) %in% names(color$legend)] <- x@meta$plot.color.default
+        names(seats.which) <- x[, color$variable] # we store color labels in the names
+        names(seats.which)[!names(seats.which) %in% names(color$legend)] <- spnet.color.node(x)
         for(k in names(color$legend)){
-          names(seats)[names(seats) == k] <- color$legend[[k]]
+          names(seats.which)[names(seats.which) == k] <- color$legend[[k]]
         }
+        col[seats.which] <- names(seats.which)
       }
       
-      col <- rep(par("bg"), nrow(coord))
-#       print(col)
-      col[seats] <- names(seats)
-#       print(col[seats])
-      arg.col <- col[as.numeric(ids)]
-#       print(arg.col)
-        
+      
       
       plot(
         x@map,
-        col = arg.col,
+#         col = arg.col,
+        col = col,
+        border = spnet.color.border(x),
+        bg = spnet.color.background(x),
         ... = ...
       )
       
@@ -2654,7 +3124,7 @@ setMethod(
       seats <- x[, 'POSITION']
       seats.which <- match(seats, ids)
       lab <- rep("", nrow(coord))
-
+      
       lab.opt <- spnet.label.list(x)
       if(any(c('variable') %in% names(lab.opt))) {
         lab.opt.clean = lab.opt[-which(names(lab.opt) %in% c('variable'))]
@@ -2663,14 +3133,14 @@ setMethod(
         lab.opt.clean = lab.opt
         lab[seats.which] <- as.character(x[, 'NODE'])
       }
-
+      
       label.call = as.call(c(
         list(
           fun=text,
           x=coord,
           labels = lab
         ),
-      lab.opt.clean
+        lab.opt.clean
       ))
       eval(label.call)
       
@@ -2684,12 +3154,12 @@ setMethod(
         names(seats) <- x[,symbol$variable] # we store the data.frame column to match to symbols in seat names
         
         seats <- .expand.multiple.names(seats)
-
+        
         role.match <- names(seats) %in% names(symbol$legend)
         seats <- seats[role.match] # then if no role match we remove
-
+        
         #symb.coord <- symb.coord[seats,]
-
+        
         if('cex' %in% names(symbol)) {
           symb.cex <- symbol$cex
         } else {
@@ -2714,14 +3184,14 @@ setMethod(
             symb.coord.multiple <- rbind(symb.coord.multiple, val)
           }
         }      
-
+        
         for(k in names(symbol$legend)){ # we replace by the symbol code
           role.match2 <- names(seats) == k # we select elements which match
           if(any(role.match2)){
             names(seats)[role.match2] <- symbol$legend[[k]] # and we replace
           }
         }
-#         print(seats)
+        #         print(seats)
         arg.pch <- names(seats)
         allsymb <- .spnet.symbol.list
         arg.pch <- allsymb[match(arg.pch, names(allsymb))]
@@ -2732,19 +3202,19 @@ setMethod(
           symb.color <- x@meta$plot.symbol.default$color
         }
         
-        if('translate.x' %in% names(symbol)) {
-          symb.translate.x <- symbol$translate.x
+        if('shift.x' %in% names(symbol)) {
+          symb.shift.x <- symbol$shift.x
         } else {
-          symb.translate.x <- x@meta$plot.symbol.default$translate.x
+          symb.shift.x <- x@meta$plot.symbol.default$shift.x
         }
-        if('translate.y' %in% names(symbol)) {
-          symb.translate.y <- symbol$translate.y
+        if('shift.y' %in% names(symbol)) {
+          symb.shift.y <- symbol$shift.y
         } else {
-          symb.translate.y <- x@meta$plot.symbol.default$translate.y
+          symb.shift.y <- x@meta$plot.symbol.default$shift.y
         }
         
-        symb.coord.multiple[,1] <- symb.coord.multiple[,1] + symb.translate.x
-        symb.coord.multiple[,2] <- symb.coord.multiple[,2] + symb.translate.y
+        symb.coord.multiple[,1] <- symb.coord.multiple[,1] + symb.shift.x
+        symb.coord.multiple[,2] <- symb.coord.multiple[,2] + symb.shift.y
         
         points(
           symb.coord.multiple,
@@ -2759,7 +3229,7 @@ setMethod(
         ids <- row.names(coord)
         seats <- x[, 'POSITION']
         seats.which <- match(seats, ids)
-
+        
         values <- x[, spnet.barplot.variable(x)]
         
         for(i in 1:length(values)) {
@@ -2777,11 +3247,11 @@ setMethod(
         }
         
       }
-
+      
       if(flag.arrow) {
         arrow.col.list <- c()
-        arrow.translate.x.list <- c()
-        arrow.translate.y.list <- c()
+        arrow.shift.x.list <- c()
+        arrow.shift.y.list <- c()
         arrow.label.list <- names(nets)
         
         coord <- coordinates(x@map)
@@ -2791,12 +3261,12 @@ setMethod(
         names(seats.which) <- x[, 'NODE']
         
         default.color = x@meta$plot.arrow.default$color
-        default.translate.x = x@meta$plot.arrow.default$translate.x
-        default.translate.y = x@meta$plot.arrow.default$translate.y
+        default.shift.x = x@meta$plot.arrow.default$shift.x
+        default.shift.y = x@meta$plot.arrow.default$shift.y
         default.opacity = x@meta$plot.arrow.default$opacity
         default.thickness = x@meta$plot.arrow.default$thickness
         default.length.rate = x@meta$plot.arrow.default$length.rate
-        default.shortening = x@meta$plot.arrow.default$shortening
+        default.shorten = x@meta$plot.arrow.default$shorten
         default.head.length = x@meta$plot.arrow.default$head.length
         default.head.type = x@meta$plot.arrow.default$head.type
         
@@ -2818,29 +3288,29 @@ setMethod(
           arrow.col <- rgb(t(col2rgb(arrow.col)), alpha = round(arrow.opacity*255), maxColorValue = 255)
           arrow.col.list <- c(arrow.col.list, arrow.col)
           
-          if('translate.x' %in% names(net.list)) {
-            arrow.translate.x <- net.list$translate.x
+          if('shift.x' %in% names(net.list)) {
+            arrow.shift.x <- net.list$shift.x
           } else {
-            arrow.translate.x <- x@meta$plot.arrow.default$translate.x[k]
+            arrow.shift.x <- x@meta$plot.arrow.default$shift.x[k]
           }
-          arrow.translate.x.list <- c(arrow.translate.x.list, arrow.translate.x)
+          arrow.shift.x.list <- c(arrow.shift.x.list, arrow.shift.x)
           
-          if('translate.y' %in% names(net.list)) {
-            arrow.translate.y <- net.list$translate.y
+          if('shift.y' %in% names(net.list)) {
+            arrow.shift.y <- net.list$shift.y
           } else {
-            arrow.translate.y <- x@meta$plot.arrow.default$translate.y[k]
+            arrow.shift.y <- x@meta$plot.arrow.default$shift.y[k]
           }
-          arrow.translate.y.list <- c(arrow.translate.x.list, arrow.translate.y)
+          arrow.shift.y.list <- c(arrow.shift.x.list, arrow.shift.y)
           
           if('length.rate' %in% names(net.list)) {
             arrow.length.rate <- net.list$length.rate
           } else {
             arrow.length.rate <- default.length.rate
           }
-          if('shortening' %in% names(net.list)) {
-            arrow.shortening <- net.list$shortening
+          if('shorten' %in% names(net.list)) {
+            arrow.shorten <- net.list$shorten
           } else {
-            arrow.shortening <- default.shortening
+            arrow.shorten <- default.shorten
           }
           
           if('label' %in% names(net.list)) {
@@ -2883,14 +3353,14 @@ setMethod(
                     y0 = arrow.coords['y0'],
                     x1 = arrow.coords['x1'],
                     y1 = arrow.coords['y1'],
-                    cut = arrow.shortening
+                    cut = arrow.shorten
                   )
-#                   print(arrow.coords)
+                  #                   print(arrow.coords)
                   Arrows(
-                    x0 = arrow.coords['x0'] + arrow.translate.x,
-                    y0 = arrow.coords['y0'] + arrow.translate.y,
-                    x1 = arrow.coords['x1'] + arrow.translate.x,
-                    y1 = arrow.coords['y1'] + arrow.translate.y,
+                    x0 = arrow.coords['x0'] + arrow.shift.x,
+                    y0 = arrow.coords['y0'] + arrow.shift.y,
+                    x1 = arrow.coords['x1'] + arrow.shift.x,
+                    y1 = arrow.coords['y1'] + arrow.shift.y,
                     col=arrow.col,
                     arr.col=arrow.col,
                     arr.length=arrow.head.length,
@@ -2904,7 +3374,7 @@ setMethod(
         }
       }
       
-
+      
       
       
       ## LEGEND
@@ -2912,7 +3382,8 @@ setMethod(
       leg.cex = spnet.legend.list(x)$cex
       leg.ncol = spnet.legend.list(x)$ncol
       leg.horiz = spnet.legend.list(x)$horiz
-
+      leg.lwd = spnet.legend.list(x)$lwd
+      
       par(spnet.par.list(x))
       plot.new()
       if(leg.pring) {
@@ -2943,29 +3414,30 @@ setMethod(
             col = arrow.col.list,
             lty = 1,
             bty = 'n',
-            cex = leg.cex
+            cex = leg.cex,
+            lwd = leg.lwd
           )
         }
-    #     if(flag.arrow){
-    #       dn <- x@plot.arrow$legend
-    #       if(nchar(dn) > 0) {
-    #         xx <- 0.8
-    #         yy <- 0.66
-    #         tt <- 0.04
-    #         arrows(xx, yy, xx + tt, yy, col=arrow.col, length=arrow.length.rate)
-    #         
-    #         text(x= xx+tt+0.11, y = yy, labels = dn, ...=...)
-    #       }
-    #     }
+        #     if(flag.arrow){
+        #       dn <- x@plot.arrow$legend
+        #       if(nchar(dn) > 0) {
+        #         xx <- 0.8
+        #         yy <- 0.66
+        #         tt <- 0.04
+        #         arrows(xx, yy, xx + tt, yy, col=arrow.col, length=arrow.length.rate)
+        #         
+        #         text(x= xx+tt+0.11, y = yy, labels = dn, ...=...)
+        #       }
+        #     }
       }
     }
-
-  reset = TRUE
-  if(is.element('reset',names(lay)))
-    if(lay$reset == FALSE)
-      reset = FALSE
-  if(reset)
-    par(def.par)  #- reset to default
+    
+    reset = TRUE
+    if(is.element('reset',names(lay)))
+      if(lay$reset == FALSE)
+        reset = FALSE
+    if(reset)
+      par(def.par)  #- reset to default
   }
 )
 
